@@ -3,7 +3,8 @@ let productLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
 // Create article
 const createArticle = (item) => {
-  // Get the section
+  console.log("controle");
+  // Create div in article
   const section = document.getElementById("cart__items");
   const article = document.createElement("article");
   const divImg = document.createElement("div");
@@ -20,12 +21,11 @@ const createArticle = (item) => {
   const divContentSettingsDelete = document.createElement("div");
   const deleteItem = document.createElement("p");
 
+  // add TextNode on div in article
   const productNameText = document.createTextNode(item.productName);
   const productColorText = document.createTextNode(item.productColor);
   const productPriceText = document.createTextNode(item.productPrice + " € ");
-  const productQuantityText = document.createTextNode(
-    " Qté :  " + item.productQuantity
-  );
+  const productQuantityText = document.createTextNode(" Qté :  ");
   const deleteItemText = document.createTextNode(" Supprimer ");
 
   // Bind to html with classes
@@ -43,7 +43,7 @@ const createArticle = (item) => {
   );
   deleteItem.classList.add("deleteItem");
 
-  // Get the item ID / color from localStorage
+  // Set attribute on each div
   article.setAttribute("data-id", item.productId);
   article.setAttribute("data-color", item.productColor);
   img.setAttribute("src", item.productImg);
@@ -54,34 +54,82 @@ const createArticle = (item) => {
   inputQuantity.setAttribute("max", "100");
   inputQuantity.setAttribute("value", item.productQuantity);
 
-  // Add article to section
+  // Add to DOM
   section.appendChild(article);
   article.appendChild(divImg);
   article.appendChild(divContent);
-
   divImg.appendChild(img);
-
   divContent.appendChild(divContentDesc);
   divContent.appendChild(divContentSettings);
-
   divContentSettings.appendChild(divContentSettingsQuantity);
   divContentSettings.appendChild(divContentSettingsDelete);
   divContentSettingsQuantity.appendChild(productQuantity);
   divContentSettingsQuantity.appendChild(inputQuantity);
   divContentSettingsDelete.appendChild(deleteItem);
   deleteItem.appendChild(deleteItemText);
-
   divContentDesc.appendChild(productName);
   divContentDesc.appendChild(productColor);
   divContentDesc.appendChild(productPrice);
-
   productQuantity.appendChild(productQuantityText);
   productName.appendChild(productNameText);
   productColor.appendChild(productColorText);
   productPrice.appendChild(productPriceText);
+
+  // Change button on cart Article
+  inputQuantity.addEventListener("change", (MouseEvent) => {
+    MouseEvent.preventDefault();
+    updateArticle(item);
+    countTotal();
+  });
+
+  // Delete button on cart Article
+  deleteItem.addEventListener("click", (MouseEvent) => {
+    MouseEvent.preventDefault();
+    deleteArticle(item, article);
+    countTotal();
+  });
+};
+
+// Change quantity before order
+const updateArticle = (item) => {
+  let quantityValue = document.querySelector(".itemQuantity").value;
+  let index = productLocalStorage.findIndex(
+    (x) => x.productId === item.productId
+  );
+  productLocalStorage[index].productQuantity = quantityValue;
+  localStorage.setItem("produit", JSON.stringify(productLocalStorage));
+  quantityValue = 0;
+};
+
+// Delete a product before order
+const deleteArticle = (item, article) => {
+  let index = productLocalStorage.findIndex(
+    (x) => x.productId === item.productId
+  );
+  productLocalStorage.splice(index, 1);
+  localStorage.setItem("produit", JSON.stringify(productLocalStorage));
+  article.remove();
+};
+
+// Total calculation
+const countTotal = () => {
+  let totalQuantity = 0;
+  let totalPrice = 0;
+
+  if (productLocalStorage) {
+    productLocalStorage.forEach((element) => {
+      totalQuantity += parseInt(element.productQuantity);
+      totalPrice +=
+        parseInt(element.productPrice) * parseInt(element.productQuantity);
+    });
+  }
+
+  document.querySelector("#totalQuantity").textContent = totalQuantity;
+  document.querySelector("#totalPrice").textContent = totalPrice;
 };
 
 // Launch the functions + read through array
 productLocalStorage.forEach((element) => {
   createArticle(element);
+  countTotal();
 });

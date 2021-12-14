@@ -1,8 +1,5 @@
 let urlParams = new URLSearchParams(window.location.search);
-console.log(window.location.search);
-console.log(urlParams);
 let id = urlParams.get("id");
-console.log(id);
 
 const fetchProduct = async (id) => {
   await fetch(`http://localhost:3000/api/products/${id}`)
@@ -15,6 +12,7 @@ const fetchProduct = async (id) => {
     });
 };
 
+//
 const display = (data) => {
   // GET THE TEMPLATE
   let template = document.querySelector(".template");
@@ -92,14 +90,15 @@ Pour consulter votre panier, cliquez sur OK`)
       //If cart already have 1 item
       if (productLocalStorage) {
         const resultFind = productLocalStorage.find(
-          (el) => el.id === id && el.productColor === colorChoice
+          (element) =>
+            element.productId === id && element.productColor === colorChoice
         );
         //If the ordered product is already in cart
         if (resultFind) {
-          let newQuantite =
+          let newQuantity =
             parseInt(productOptions.productQuantity) +
             parseInt(resultFind.productQuantity);
-          resultFind.productQuantity = newQuantite;
+          resultFind.productQuantity = newQuantity;
           localStorage.setItem("produit", JSON.stringify(productLocalStorage));
           console.table(productLocalStorage);
           popupConfirmation();
