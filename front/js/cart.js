@@ -3,7 +3,6 @@ let productLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
 // Create article
 const createArticle = (item) => {
-  console.log("controle");
   // Create div in article
   const section = document.getElementById("cart__items");
   const article = document.createElement("article");
@@ -92,13 +91,14 @@ const createArticle = (item) => {
 
 // Change quantity before order
 const updateArticle = (item) => {
-  let quantityValue = document.querySelector(".itemQuantity").value;
+  let quantityListen = document.querySelectorAll(".itemQuantity");
   let index = productLocalStorage.findIndex(
-    (x) => x.productId === item.productId
+    (x) =>
+      x.productId === item.productId && x.productColor === item.productColor
   );
+  quantityValue = quantityListen[index].value;
   productLocalStorage[index].productQuantity = quantityValue;
   localStorage.setItem("produit", JSON.stringify(productLocalStorage));
-  quantityValue = 0;
 };
 
 // Delete a product before order

@@ -82,7 +82,7 @@ const addToCart = (item) => {
           window.confirm(`Votre commande de ${quantityChoice} ${item.name} ${colorChoice} est ajoutée au panier
 Pour consulter votre panier, cliquez sur OK`)
         ) {
-          window.location.href = "cart.html";
+          window.location.href = "index.html";
         }
       };
 
