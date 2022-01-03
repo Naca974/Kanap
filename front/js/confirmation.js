@@ -1,9 +1,7 @@
-// let urlParams = new URLSearchParams(window.location.search);
-// let orderId = urlParams.get("orderId");
-
 function main() {
-  const idNode = document.getElementById("orderId");
-  idNode.innerText = localStorage.getItem("orderId");
+  let id = new URLSearchParams(window.location.search).get("orderId");
+  const idNumber = document.getElementById("orderId");
+  idNumber.innerText = id;
   localStorage.clear();
 }
 main();
