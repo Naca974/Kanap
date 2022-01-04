@@ -129,9 +129,7 @@ const countTotal = () => {
 };
 
 // Launch the functions + read through array
-if (!productLocalStorage) {
-  //////////////////////////////////////////////////////////////////
-} else {
+if (productLocalStorage) {
   productLocalStorage.forEach((element) => {
     createArticle(element);
     countTotal();
