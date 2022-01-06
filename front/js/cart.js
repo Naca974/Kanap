@@ -151,22 +151,42 @@ function checkFormAndPostRequest() {
   // When click, if line empty, show error, stop sending the form.
   submit.addEventListener("click", (e) => {
     e.preventDefault();
+    let formErrorMsgList = document.querySelectorAll(
+      ".cart__order__form__question"
+    );
+    console.log(formErrorMsgList);
+
+    formErrorMsgList.forEach((element) => {
+      let formErrorMsg = element.lastElementChild;
+      console.log(formErrorMsg);
+      formErrorMsg.textContent = "";
+    });
 
     // check if input match with regex letter
     if (!inputFirstName.value.match(regexLetter)) {
       console.log("error sur le inputFirstName");
+      let errorMsg = document.getElementById("firstNameErrorMsg");
+      errorMsg.textContent = "Veuillez renseigner ce champ";
       e.preventDefault();
     } else if (!inputLastName.value.match(regexLetter)) {
       console.log("error sur le inputLastName");
+      let errorMsg = document.getElementById("lastNameErrorMsg");
+      errorMsg.textContent = "Veuillez renseigner ce champ";
       e.preventDefault();
-    } else if (!inputCity.value.match(regexLetter)) {
+    } else if (!inputAddress.value.match(regexLetter)) {
+      console.log("error sur le inputAdresse");
+      let errorMsg = document.getElementById("addressErrorMsg");
+      errorMsg.textContent = "Veuillez renseigner ce champ";
+      e.preventDefault();
+    } else if (!inputCity.value.match(regexAddress)) {
       console.log("error sur le inputCity");
-      e.preventDefault();
-    } else if (!inputAddress.value.match(regexAddress)) {
-      console.log("error sur le inputAddress");
+      let errorMsg = document.getElementById("cityErrorMsg");
+      errorMsg.textContent = "Veuillez renseigner ce champ";
       e.preventDefault();
     } else if (!inputMail.value.match(regexEmail)) {
       console.log("error sur le inputMail");
+      let errorMsg = document.getElementById("emailErrorMsg");
+      errorMsg.textContent = "L'Email n'est pas valide";
       e.preventDefault();
     } else {
       // If there is no value in localStorage, show an error.
